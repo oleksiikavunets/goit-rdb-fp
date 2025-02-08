@@ -57,3 +57,21 @@
 Створіть і використайте функцію, що будує такий же атрибут, як і в попередньому завданні:
 функція має приймати на вхід значення року, а повертати різницю в роках між поточною датою та датою, створеною
 з атрибута року (1996 рік → ‘1996-01-01’).
+
+    DELIMITER //
+
+    CREATE FUNCTION YEAR_DIFF(input_year YEAR)
+    RETURNS INT
+    DETERMINISTIC
+    NO SQL
+    BEGIN
+        DECLARE year_diff INT;
+
+        SET year_diff = YEAR(CURDATE()) - YEAR(MAKEDATE(input_year, 1));
+
+        RETURN year_diff;
+    END //
+
+    DELIMITER ;
+
+
