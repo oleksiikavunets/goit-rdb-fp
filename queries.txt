@@ -1,0 +1,59 @@
+3. Проаналізуйте дані:
+ - Для кожної унікальної комбінації Entity та Code або їх id порахуйте середнє,
+   мінімальне, максимальне значення та суму для атрибута Number_rabies.
+
+    SELECT r.name, AVG(rabies_cases) avg_rabies, MAX(rabies_cases) max_rabies, MIN(rabies_cases) min_rabies
+        FROM infectious_cases ic
+        JOIN regions r ON r.id = ic.region_id
+    GROUP BY r.name
+
+ - Результат відсортуйте за порахованим середнім значенням у порядку спадання.
+
+    SELECT r.name, AVG(rabies_cases) avg_rabies, MAX(rabies_cases) max_rabies, MIN(rabies_cases) min_rabies
+        FROM infectious_cases ic
+        JOIN regions r ON r.id = ic.region_id
+    GROUP BY r.name
+    ORDER BY avg_rabies DESC
+
+ - Оберіть тільки 10 рядків для виведення на екран.
+
+    SELECT r.name, AVG(rabies_cases) avg_rabies, MAX(rabies_cases) max_rabies, MIN(rabies_cases) min_rabies
+        FROM infectious_cases ic
+        JOIN regions r ON r.id = ic.region_id
+    GROUP BY r.name
+    ORDER BY avg_rabies DESC
+    LIMIT 10
+
+
+4. Побудуйте колонку різниці в роках. Для оригінальної або нормованої таблиці для колонки Year побудуйте
+з використанням вбудованих SQL-функцій:
+ - атрибут, що створює дату першого січня відповідного року,
+
+    ALTER TABLE infectious_cases
+    ADD COLUMN date DATE;
+
+    UPDATE infectious_cases
+    SET date = MAKEDATE(year, 1)
+
+
+ - атрибут, що дорівнює поточній даті,
+
+    ALTER TABLE infectious_cases
+    ADD COLUMN curr_date DATE;
+
+    UPDATE infectious_cases
+    SET curr_date = CURDATE()
+
+
+ - атрибут, що дорівнює різниці в роках двох вищезгаданих колонок.
+
+    ALTER TABLE infectious_cases
+    ADD COLUMN years_diff INT;
+
+    UPDATE infectious_cases
+    SET years_diff = YEAR(curr_date) - YEAR(date)
+
+5. Побудуйте власну функцію.
+Створіть і використайте функцію, що будує такий же атрибут, як і в попередньому завданні:
+функція має приймати на вхід значення року, а повертати різницю в роках між поточною датою та датою, створеною
+з атрибута року (1996 рік → ‘1996-01-01’).
